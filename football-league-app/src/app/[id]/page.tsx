@@ -7,10 +7,9 @@ import { PlayerType } from "@/app/types/player";
 
 type TeamWithPlayers = TeamType & { players: PlayerType[] };
 
-export default function TeamPage({ params }: { params: Promise<{ id: string }> }) {
+export default function TeamPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const { id } = React.use(params);
-  const teamId = parseInt(id);
+  const teamId = parseInt(params.id);
 
   const [team, setTeam] = useState<TeamWithPlayers | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,9 +48,15 @@ export default function TeamPage({ params }: { params: Promise<{ id: string }> }
       setLoading(true);
       setError(null);
       try {
+        console.log('Fetching team with ID:', teamId);
         const res = await fetch(`/api/teams/${teamId}`);
-        if (!res.ok) throw new Error("Failed to fetch team");
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.error('Error response:', errorData);
+          throw new Error(errorData.message || "Failed to fetch team");
+        }
         const data = await res.json();
+        console.log('Team data received:', data);
         setTeam(data as TeamWithPlayers);
         setInfoData({
           name: data.name,
@@ -69,6 +74,7 @@ export default function TeamPage({ params }: { params: Promise<{ id: string }> }
           goals_conceded: data.goals_conceded,
         });
       } catch (err: any) {
+        console.error('Error fetching team:', err);
         setError(err.message || "Failed to load team");
       } finally {
         setLoading(false);
