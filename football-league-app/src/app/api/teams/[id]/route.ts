@@ -4,11 +4,17 @@ import { logAction } from '@/lib/monitoring';
 
 const prisma = new PrismaClient();
 
+type RouteContext = {
+  params: {
+    id: string;
+  };
+};
+
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: RouteContext
 ) {
-  const id = params.id;
+  const id = context.params.id;
   console.log("Fetching team with ID:", id);
 
   const teamId = parseInt(id);
@@ -50,9 +56,9 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: any
+  context: RouteContext
 ) {
-  const id = params.id;
+  const id = context.params.id;
   const teamId = parseInt(id);
 
   if (isNaN(teamId)) {
@@ -146,8 +152,8 @@ interface UpdateTeamData {
 const updateData: UpdateTeamData = {};
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: RouteContext
 ) {
   try {
     const { searchParams } = new URL(request.url);
@@ -160,7 +166,7 @@ export async function DELETE(
       );
     }
 
-    const teamId = parseInt(params.id);
+    const teamId = parseInt(context.params.id);
     const team = await prisma.team.findUnique({
       where: { id: teamId },
     });

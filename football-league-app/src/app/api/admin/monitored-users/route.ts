@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getMonitoredUsers } from '@/lib/monitoring';
 
+// Mark this route as dynamic
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const userData = request.headers.get('user-data');
