@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -54,9 +54,9 @@ export async function checkUserActivity() {
 
   for (const user of users) {
     const totalModifyActions = user.logs.length;
-    const deleteActions = user.logs.filter(log => log.action === 'DELETE').length;
-    const createActions = user.logs.filter(log => log.action === 'CREATE').length;
-    const updateActions = user.logs.filter(log => log.action === 'UPDATE').length;
+    const deleteActions = user.logs.filter((log: any) => log.action === 'DELETE').length;
+    const createActions = user.logs.filter((log: any) => log.action === 'CREATE').length;
+    const updateActions = user.logs.filter((log: any) => log.action === 'UPDATE').length;
 
     // Log the counts for debugging
     if (totalModifyActions > 0) {

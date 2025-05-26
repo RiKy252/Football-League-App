@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { logAction } from '@/lib/monitoring';
 
 const prisma = new PrismaClient();
@@ -22,13 +22,13 @@ export async function GET(req: Request) {
     });
 
     // Calculate metadata on the full list
-    const winsArr = teams.map(team => team.wins ?? 0);
+    const winsArr = teams.map((team: any) => team.wins ?? 0);
     const maxWins = Math.max(...winsArr);
     const minWins = Math.min(...winsArr);
-    const avgWins = Math.round(winsArr.reduce((a, b) => a + b, 0) / winsArr.length);
+    const avgWins = Math.round(winsArr.reduce((a: any, b: any) => a + b, 0) / winsArr.length);
 
     // Calculate metadata and points safely
-    const teamsWithMeta = teams.map(team => {
+    const teamsWithMeta = teams.map((team: any) => {
       const wins = team.wins ?? 0;
       const draws = team.draws ?? 0;
       const losses = team.losses ?? 0;

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -54,7 +54,7 @@ async function generateFakeData() {
       position: faker.helpers.arrayElement(positions),
       age: faker.number.int({ min: 16, max: 40 }),
       nationality: faker.helpers.arrayElement(countries),
-      team_id: faker.helpers.arrayElement(teamsInDb).id,
+      team_id: (faker.helpers.arrayElement(teamsInDb) as { id: number }).id,
     };
     players.push(player);
   }

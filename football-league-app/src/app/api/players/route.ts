@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { logAction } from '@/lib/monitoring';
 import { NextRequest } from 'next/server';
 
