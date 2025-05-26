@@ -89,8 +89,8 @@ export default function TeamPage({ params }: { params: { id: string } }) {
     setInfoData({ ...infoData, [name]: value });
   };
   const handleInfoSave = async () => {
-    if (infoData.abbreviation && infoData.abbreviation.length > 3) {
-      setError("Abbreviation must be at most 3 characters long.");
+    if (infoData.abbreviation && infoData.abbreviation.length > 4) {
+      setError("Abbreviation must be at most 4 characters long.");
       return;
     }
     setSavingInfo(true);
